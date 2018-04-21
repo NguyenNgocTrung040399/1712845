@@ -5,7 +5,6 @@
 #include<fcntl.h>
 #include<io.h>
 #include<stdlib.h>
-
 struct sinhvien
 {
 	wchar_t MSSV[10];
@@ -21,11 +20,11 @@ struct sinhvien
 void xacdinhsoluongsv(int &n)
 {
 	wchar_t str[2000];
-	_setmode(_fileno(stdout), _O_U16TEXT);
 	FILE*p = _wfopen(L"danhsach1.csv", L"r,ccs=UTF-16LE");
 	if (p == NULL)
 	{
 		wprintf(L"Không tìm ra file\n");
+		return;
 	}
 	else
 	{
@@ -110,11 +109,11 @@ void doc1sinhvien(FILE *p, sv &a)
 void doctatca(sv a[],int &index,int n)
 {
 	index = 0;
-	_setmode(_fileno(stdout), _O_U16TEXT);
 	FILE *p = _wfopen(L"danhsach1.csv", L"r,ccs=UTF-16LE");
 	if (p == NULL)
 	{
 		wprintf(L"Không tìm ra file\n");
+		return;
 	}
 	else
 	{
@@ -125,6 +124,23 @@ void doctatca(sv a[],int &index,int n)
 		}
 	}
 	fclose(p);
+}
+void xuatmanhinh(sv a[], int index)
+{
+
+	for (int i = 0; i < index; i++)
+	{
+		wprintf(L"MSSV : %ls\n", a[i].MSSV);
+		wprintf(L"Họ và tên : %ls\n", a[i].ten);
+		wprintf(L"Khoa : %ls\n", a[i].khoa);
+		wprintf(L"Khóa : %d\n", a[i].khoahoc);
+		wprintf(L"Ngày sinh : %ls\n", a[i].date);
+		wprintf(L"Hình ảnh : %ls\n", a[i].hinhanh);
+		wprintf(L"Email : %ls\n", a[i].email);
+		wprintf(L"Mô tả : %ls\n", a[i].mota);
+		wprintf(L"Sở thích: %ls\n", a[i].sothich[0]);
+		wprintf(L"Sở thích: %ls\n\n\n", a[i].sothich[1]);
+	}
 }
 void xuat(sv a[], int index)
 {
@@ -234,12 +250,14 @@ void xuat(sv a[], int index)
 }
 int main()
 {
+	_setmode(_fileno(stdout), _O_U16TEXT);
 	int index;
 	int n = 0;
 	sv *a;
 	xacdinhsoluongsv(n);
 	a = (sv*)malloc(n * sizeof(sv));
 	doctatca(a, index,n);
+	xuatmanhinh(a, index);
 	xuat(a, index);
 	wprintf(L"Hoàn Thành\n");
 	getch();
